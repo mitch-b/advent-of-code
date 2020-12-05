@@ -9,10 +9,8 @@ using System.Linq;
 
 namespace AdventOfCode.Solutions
 {
-
     public static class Utilities
     {
-
         public static int[] ToIntArray(this string str, string delimiter = "")
         {
             if(delimiter == "")

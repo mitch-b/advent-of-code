@@ -1,4 +1,12 @@
-# AdventOfCodeBase
+# Advent Of Code
+
+C# solutions to https://adventofcode.com
+
+This project was created from template project, [AdventOfCodeBase](https://github.com/sindrekjr/AdventOfCodeBase) which let me focus on the solutions rather than the setup of each day. 
+
+README for the base project included below.
+
+## AdventOfCodeBase
 Template project for solving Advent of Code in C#, running on [.NET 5.0](https://dotnet.microsoft.com/download/dotnet/5.0).
 
 - [Features](#features)

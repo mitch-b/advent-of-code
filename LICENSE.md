@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2019 sindrekjr
+Copyright for templated portion of this project "AdventOfCodeBase" are held by sindrekjr, 2019. All other copyright are held by mitch-b, 2020
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
