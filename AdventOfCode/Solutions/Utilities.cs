@@ -68,11 +68,11 @@ namespace AdventOfCode.Solutions
             return string.Join("", items);
         }
 
-        public static string[] SplitByNewline(this string input, bool shouldTrim = false)
+        public static string[] SplitByNewline(this string input, bool shouldTrim = false, bool shouldIgnoreEmpty = true)
         {
             return input
                 .Split(new[] { "\r", "\n", "\r\n" }, StringSplitOptions.None)
-                .Where(s => !string.IsNullOrWhiteSpace(s))
+                .Where(s => !shouldIgnoreEmpty || !string.IsNullOrWhiteSpace(s))
                 .Select(s => shouldTrim ? s.Trim() : s)
                 .ToArray();
         }
