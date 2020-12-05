@@ -1,26 +1,48 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace AdventOfCode.Solutions.Year2020
 {
-
     class Day03 : ASolution
     {
+        private readonly char[][] map;
+        private int length;
 
         public Day03() : base(03, 2020, "")
         {
-
+            length = Input.IndexOf("\n");
+            // convert input string to addressable array
+            map = Input.SplitByNewline(true)
+                .Select(row => row.Select(c => c).ToArray()).ToArray();
         }
 
         protected override string SolvePartOne()
         {
-            return null;
+            var trees = TreesHitBySlope((3, 1));
+            return trees.ToString();
         }
 
         protected override string SolvePartTwo()
         {
-            return null;
+            var trees = TreesHitBySlope((1, 1))
+                * TreesHitBySlope((3, 1))
+                * TreesHitBySlope((5, 1))
+                * TreesHitBySlope((7, 1))
+                * TreesHitBySlope((1, 2));
+            return trees.ToString();
         }
+
+        private long TreesHitBySlope((int x, int y) advanceBySlope)
+        {
+            var trees = 0;
+            (int x, int y) position = (0, 0);
+            while (position.y < map.Length)
+            {
+                trees += (TreeAtPosition(position)) ? 1 : 0;
+                position = position.Add(advanceBySlope);
+            }
+            return trees;
+        }
+
+        private bool TreeAtPosition((int x, int y) pos) => map[pos.y][pos.x % length] == '#';
     }
 }
