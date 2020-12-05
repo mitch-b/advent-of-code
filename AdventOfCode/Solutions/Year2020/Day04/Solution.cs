@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Solutions.Year2020
 {
@@ -20,7 +21,7 @@ namespace AdventOfCode.Solutions.Year2020
 
         protected override string SolvePartTwo()
         {
-            return null;
+            return passports.Count(p => p.IsValid).ToString();
         }
 
         private IEnumerable<Passport> GetPassports(string[] inputRows)
@@ -61,13 +62,35 @@ namespace AdventOfCode.Solutions.Year2020
     {
         public PassportField[] passportFields = new[]
         {
-            new PassportField { ShortCode = "byr" }, // Birth Year
-            new PassportField { ShortCode = "iyr" }, // Issue Year
-            new PassportField { ShortCode = "eyr" }, // Expiration Year
-            new PassportField { ShortCode = "hgt" }, // Height
-            new PassportField { ShortCode = "hcl" }, // Hair Color
-            new PassportField { ShortCode = "ecl" }, // Eye Color
-            new PassportField { ShortCode = "pid" }, // Passport ID
+            new PassportField { ShortCode = "byr", ValidationFunction = (p) => {
+                return int.TryParse(p.Value, out int year) && year >= 1920 && year <= 2002;
+            } }, // Birth Year
+            new PassportField { ShortCode = "iyr", ValidationFunction = (p) => {
+                return int.TryParse(p.Value, out int year) && year >= 2010 && year <= 2020;
+            } }, // Issue Year
+            new PassportField { ShortCode = "eyr", ValidationFunction = (p) => {
+                return int.TryParse(p.Value, out int year) && year >= 2020 && year <= 2030;
+            } }, // Expiration Year
+            new PassportField { ShortCode = "hgt", ValidationFunction = (p) => {
+                if (p.Value?.Contains("cm") == true)
+                {
+                    return int.TryParse(p.Value.Replace("cm", ""), out int height) && height >= 150 && height <= 193;
+                }
+                else if (p.Value?.Contains("in") == true)
+                {
+                    return int.TryParse(p.Value.Replace("in", ""), out int height) && height >= 59 && height <= 76;
+                }
+                return false;
+            } }, // Height
+            new PassportField { ShortCode = "hcl", ValidationFunction = (p) => {
+                return new Regex("#[0-9a-f]{6}").Match(p.Value ?? string.Empty).Success;
+            } }, // Hair Color
+            new PassportField { ShortCode = "ecl", ValidationFunction = (p) => {
+                return (new[] {"amb", "blu", "brn", "gry", "grn", "hzl", "oth" }).Contains(p.Value);
+            } }, // Eye Color
+            new PassportField { ShortCode = "pid", ValidationFunction = (p) => {
+                return p.Value?.Length == 9 && int.TryParse(p.Value, out int _);
+            } }, // Passport ID
             new PassportField { ShortCode = "cid", ValidationFunction = (p) => true }  // Country ID
         };
 
