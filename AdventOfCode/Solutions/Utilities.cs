@@ -77,26 +77,39 @@ namespace AdventOfCode.Solutions
                 .ToArray();
         }
 
-        public static IEnumerable<string>[] SplitByEmptyLine(this string input, bool shouldTrim = false)
+        /// <summary>
+        /// I thought this was clever, but I'm sure this will make no sense to me the next time I try to use it
+        /// </summary>
+        /// <typeparam name="T">Type to return groups in (typical expectation, string[])</typeparam>
+        /// <param name="input">Action to perform on, like Input</param>
+        /// <param name="resultAction">Optional function where the output object can be manipulated from the collection of rows before being placed in output</param>
+        /// <param name="rowAdd">Optional transformation applied to the row before being added to collection of row data passed to resultAction</param>
+        /// <returns></returns>
+        public static IEnumerable<T> SplitByEmptyLine<T>(this string input, Func<string[], T> resultAction = null, Func<string, string[]> rowAdd = null)
         {
-            var splitInput = input.SplitByNewline(shouldTrim, false);
-            var output = new List<IEnumerable<string>>();
+            // default collate action (add string row to array output)
+            rowAdd ??= (r => new[] { r });
+            // default result action (add string array as-is)
+            resultAction ??= lines => (T)(object)lines;
+
+            var splitInput = input.SplitByNewline(true, false);
+            var output = new List<T>();
             var lines = new List<string>();
             foreach (var row in splitInput)
             {
                 if (string.IsNullOrWhiteSpace(row))
                 {
-                    output.Add(lines.ToArray());
+                    output.Add(resultAction(lines.ToArray()));
                     lines.Clear();
                 }
                 else
                 {
-                    lines.Add(row);
+                    lines.AddRange(rowAdd(row));
                 }
             }
             if (lines.Any())
             {
-                output.Add(lines);
+                output.Add(resultAction(lines.ToArray()));
             }
             return output.ToArray();
         }

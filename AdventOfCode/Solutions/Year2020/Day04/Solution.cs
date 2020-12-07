@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace AdventOfCode.Solutions.Year2020
@@ -11,47 +10,34 @@ namespace AdventOfCode.Solutions.Year2020
         private readonly IEnumerable<Passport> passports;
         public Day04() : base(04, 2020, "")
         {
-            passports = GetPassports(Input.SplitByNewline(true, false));
+            Func<string[], Passport> passportFromFields = (fields) => Passport.FromFields(fields);
+            Func<string, string[]> actionOnRowAdd = (row) => row.Split(' ');
+            passports = Input.SplitByEmptyLine(passportFromFields, actionOnRowAdd);
         }
 
         protected override string SolvePartOne()
         {
-            return passports.Count(p => p.IsValid).ToString();
+            return passports.Count(p => p.IsValid(false)).ToString();
         }
 
         protected override string SolvePartTwo()
         {
-            return passports.Count(p => p.IsValid).ToString();
-        }
-
-        private IEnumerable<Passport> GetPassports(string[] inputRows)
-        {
-            var passports = new List<Passport>();
-            var tempFields = new List<string>();
-            foreach(var row in inputRows)
-            {
-                if (string.IsNullOrWhiteSpace(row))
-                {
-                    passports.Add(Passport.FromFields(tempFields));
-                    tempFields.Clear();
-                }
-                else
-                {
-                    tempFields.AddRange(row.Split(' '));
-                }
-            }
-            return passports;
+            return passports.Count(p => p.IsValid(true)).ToString();
         }
     }
     class PassportField
     {
         public string ShortCode { get; set; }
         public string Value { get; set; }
-        public bool IsValid()
+        public bool IsValid(bool includeStricterChecks = false)
         {
             if (ValidationFunction != null)
             {
-                return ValidationFunction(this);
+                if (includeStricterChecks)
+                {
+                    return ValidationFunction(this);
+                }
+                return !string.IsNullOrWhiteSpace(this.Value) || ShortCode == "cid"; /* ew */
             }
             return false;
         }
@@ -114,6 +100,6 @@ namespace AdventOfCode.Solutions.Year2020
             return passport;
         }
 
-        public bool IsValid => passportFields.All(field => field.IsValid());
+        public bool IsValid(bool includeStricterChecks) => passportFields.All(field => field.IsValid(includeStricterChecks));
     }
 }

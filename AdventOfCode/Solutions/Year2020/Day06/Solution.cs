@@ -8,7 +8,7 @@ namespace AdventOfCode.Solutions.Year2020
         private readonly IEnumerable<Group> groups;
         public Day06() : base(06, 2020, "")
         {
-            groups = Input.SplitByEmptyLine().Select(answers => new Group(answers));
+            groups = Input.SplitByEmptyLine<string[]>().Select(answers => new Group(answers));
         }
 
         protected override string SolvePartOne()
