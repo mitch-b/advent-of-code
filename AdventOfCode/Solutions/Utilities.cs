@@ -77,6 +77,30 @@ namespace AdventOfCode.Solutions
                 .ToArray();
         }
 
+        public static IEnumerable<string>[] SplitByEmptyLine(this string input, bool shouldTrim = false)
+        {
+            var splitInput = input.SplitByNewline(shouldTrim, false);
+            var output = new List<IEnumerable<string>>();
+            var lines = new List<string>();
+            foreach (var row in splitInput)
+            {
+                if (string.IsNullOrWhiteSpace(row))
+                {
+                    output.Add(lines.ToArray());
+                    lines.Clear();
+                }
+                else
+                {
+                    lines.Add(row);
+                }
+            }
+            if (lines.Any())
+            {
+                output.Add(lines);
+            }
+            return output.ToArray();
+        }
+
         public static string Reverse(this string str)
         {
             char[] arr = str.ToCharArray();
