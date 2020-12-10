@@ -164,5 +164,13 @@ namespace AdventOfCode.Solutions
         }
 
         public static (int, int) Add(this (int x, int y) a, (int x, int y) b) => (a.x + b.x, a.y + b.y);
+
+        public static void AddRange<T>(this HashSet<T> hashSet, IEnumerable<T> items)
+        {
+            foreach (var item in items)
+            {
+                hashSet.Add(item);
+            }
+        }
     }
 }
