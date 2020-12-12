@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace AdventOfCode.Solutions.Year2020
 {
     class Day05 : ASolution
     {
         private readonly string[] instructions;
-        private int aislesInPlane = 8;
 
         public Day05() : base(05, 2020, "")
         {
@@ -20,11 +16,7 @@ namespace AdventOfCode.Solutions.Year2020
             var highestSeatId = 0;
             for (var i = 0; i < instructions.Length; i++)
             {
-                var rowInstructions = instructions[i].Substring(0, 7).Select(c => c).ToArray();
-                var aisleInstructions = instructions[i].Substring(7, 3).Select(c => c).ToArray();
-                var rowNumber = GetBinarySpacePartitionNumber(rowInstructions, (0, 127), 'F');
-                var seatNumber = GetBinarySpacePartitionNumber(aisleInstructions, (0, 7), 'L');
-                var seatId = rowNumber * 8 + seatNumber;
+                var seatId = GetSeatId(instructions[i]);
                 if (seatId > highestSeatId)
                 {
                     highestSeatId = seatId;
@@ -38,14 +30,18 @@ namespace AdventOfCode.Solutions.Year2020
             var seats = new int[128 * 8];
             for (var i = 0; i < instructions.Length; i++)
             {
-                var rowInstructions = instructions[i].Substring(0, 7).Select(c => c).ToArray();
-                var aisleInstructions = instructions[i].Substring(7, 3).Select(c => c).ToArray();
-                var rowNumber = GetBinarySpacePartitionNumber(rowInstructions, (0, 127), 'F');
-                var seatNumber = GetBinarySpacePartitionNumber(aisleInstructions, (0, 7), 'L');
-                var seatId = rowNumber * 8 + seatNumber;
-                seats[seatId] = 1;
+                seats[GetSeatId(instructions[i])] = 1;
             }
             return (string.Join("", seats).IndexOf("101") + 1).ToString();
+        }
+
+        private int GetSeatId(string instruction)
+        {
+            var rowInstructions = instruction.Substring(0, 7).Select(c => c).ToArray();
+            var aisleInstructions = instruction.Substring(7, 3).Select(c => c).ToArray();
+            var rowNumber = GetBinarySpacePartitionNumber(rowInstructions, (0, 127), 'F');
+            var seatNumber = GetBinarySpacePartitionNumber(aisleInstructions, (0, 7), 'L');
+            return rowNumber * 8 + seatNumber;
         }
 
         private int GetBinarySpacePartitionNumber(char[] instructions, (int min, int max) range, char lowerBoundInstruction)
