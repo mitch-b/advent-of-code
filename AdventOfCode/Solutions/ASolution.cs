@@ -125,7 +125,7 @@ namespace AdventOfCode.Solutions
             {
                 return solver();
             }
-            catch( Exception ) {
+            catch( Exception ex ) {
                 if( Debugger.IsAttached )
                 {
                     Debugger.Break();
