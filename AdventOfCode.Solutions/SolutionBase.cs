@@ -71,8 +71,9 @@ public abstract class SolutionBase
                 ? SolutionResult.Empty
                 : new SolutionResult { Answer = result, Time = now - then };
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            Console.WriteLine($"Exception: {e.Message}");
             if (Debugger.IsAttached)
             {
                 Debugger.Break();
