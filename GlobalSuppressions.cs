@@ -5,4 +5,4 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Style", "IDE0130:Namespace does not match folder structure", Justification = "<Pending>", Scope = "namespace", Target = "~N:AdventOfCode.Solutions.Year2020.Day02")]
+[assembly: SuppressMessage("Style", "IDE0130:Namespace does not match folder structure", Justification = "Advent of Code solution structure uses namespaces that intentionally differ from folder paths")]
