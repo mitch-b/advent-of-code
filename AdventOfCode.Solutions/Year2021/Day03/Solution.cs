@@ -6,11 +6,17 @@ class Solution : SolutionBase
 
     protected override string? SolvePartOne()
     {
-        var codes = this.Input?.SplitByNewline();
+        var codes = this.Input.SplitByNewline();
+        if (codes.Length == 0)
+        {
+            return null;
+        }
+
         var gammaRate = string.Empty;
         var epsilonRate = string.Empty;
         var majorityCount = codes.Length / 2;
-        for (var i = 0; i < codes.First().Length; i++)
+        var codeLength = codes[0].Length;
+        for (var i = 0; i < codeLength; i++)
         {
             gammaRate += codes.Count(c => c[i] == '1') >= majorityCount ? "1" : "0";
             epsilonRate += codes.Count(c => c[i] == '1') >= majorityCount ? "0" : "1";
@@ -22,10 +28,15 @@ class Solution : SolutionBase
 
     protected override string? SolvePartTwo()
     {
-        var codes = this.Input?.SplitByNewline();
-        var oxygenGeneratorRating = string.Empty;
+        var codes = this.Input.SplitByNewline();
+        if (codes.Length == 0)
+        {
+            return null;
+        }
+
         var filteredCodes = new List<string>(codes);
-        for (var i = 0; i < codes.First().Length; i++)
+        var codeLength = codes[0].Length;
+        for (var i = 0; i < codeLength; i++)
         {
             var ones = filteredCodes.Count(c => c[i] == '1');
             var zeroes = filteredCodes.Count(c => c[i] == '0');
@@ -35,10 +46,8 @@ class Solution : SolutionBase
         }
         var oxygenGeneratorRatingValue = Convert.ToInt32(filteredCodes.First(), 2);
 
-
-        var co2ScrubberRating = string.Empty;
         filteredCodes = new List<string>(codes);
-        for (var i = 0; i < codes.First().Length; i++)
+        for (var i = 0; i < codeLength; i++)
         {
             var ones = filteredCodes.Count(c => c[i] == '1');
             var zeroes = filteredCodes.Count(c => c[i] == '0');

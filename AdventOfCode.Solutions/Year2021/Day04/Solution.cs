@@ -68,8 +68,8 @@ class Solution : SolutionBase
 
 class Board
 {
-    public int[][] Matrix;
-    public HashSet<int> Picks = new HashSet<int>();
+    public int[][] Matrix { get; private set; } = Array.Empty<int[]>();
+    public HashSet<int> Picks { get; } = new HashSet<int>();
     public static Board Create(IEnumerable<string> inputString)
     {
         var board = new Board();

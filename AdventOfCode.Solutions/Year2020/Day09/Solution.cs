@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace AdventOfCode.Solutions.Year2020.Day09;
 
 class Solution : SolutionBase
@@ -5,7 +7,9 @@ class Solution : SolutionBase
     private readonly IEnumerable<long> xmasData;
     public Solution() : base(09, 2020, "")
     {
-        this.xmasData = Input.SplitByNewline().Select(n => long.Parse(n));
+        this.xmasData = Input
+            .SplitByNewline()
+            .Select(n => long.Parse(n, CultureInfo.InvariantCulture));
     }
 
     protected override string? SolvePartOne()
@@ -24,7 +28,13 @@ class Solution : SolutionBase
 
     protected override string? SolvePartTwo()
     {
-        var breakpoint = long.Parse(SolvePartOne());
+        var partOneResult = SolvePartOne();
+        if (string.IsNullOrEmpty(partOneResult))
+        {
+            throw new InvalidOperationException("Unable to determine the XMAS weakness without a target value.");
+        }
+
+        var breakpoint = long.Parse(partOneResult, CultureInfo.InvariantCulture);
         for (var i = 0; i < xmasData.Count(); i++)
         {
             var sequence = new List<long>();

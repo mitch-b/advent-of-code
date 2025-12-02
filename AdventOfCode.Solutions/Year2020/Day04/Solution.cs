@@ -25,8 +25,8 @@ class Solution : SolutionBase
 
 class PassportField
 {
-    public string ShortCode { get; set; }
-    public string Value { get; set; }
+    public string ShortCode { get; set; } = string.Empty;
+    public string Value { get; set; } = string.Empty;
     public bool IsValid(bool includeStricterChecks = false)
     {
         if (ValidationFunction != null)

@@ -76,7 +76,7 @@ class Solution : SolutionBase
         return diagram;
     }
 
-    private int[,] Diagram;
+    private int[,] Diagram = new int[0, 0];
     private List<Line> Lines = new List<Line>();
 }
 

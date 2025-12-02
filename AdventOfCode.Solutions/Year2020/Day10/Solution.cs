@@ -57,7 +57,20 @@ class JoltageAdapter : IComparable
         this.JoltageFlux = joltageFlux;
     }
 
-    public int CompareTo(object obj) => this.JoltageRating.CompareTo(((JoltageAdapter)obj).JoltageRating);
+    public int CompareTo(object? obj)
+    {
+        if (obj is null)
+        {
+            return 1;
+        }
+
+        if (obj is JoltageAdapter other)
+        {
+            return this.JoltageRating.CompareTo(other.JoltageRating);
+        }
+
+        throw new ArgumentException("Object must be a JoltageAdapter.", nameof(obj));
+    }
 
     public bool Handles(int joltageRating) => Math.Abs(joltageRating - this.JoltageRating) <= this.JoltageFlux;
 }

@@ -76,7 +76,7 @@ record class Entry(IEnumerable<SegmentDisplay> signalPatterns, IEnumerable<Segme
 record class SegmentDisplay(string segmentCode)
 {
     public HashSet<char> Segments = new HashSet<char>(segmentCode.ToCharArray());
-    public int? GetDigit(Dictionary<int, HashSet<char>> digitSegments = null)
+    public int? GetDigit(Dictionary<int, HashSet<char>>? digitSegments = null)
     {
         switch (segmentCode.Length)
         {

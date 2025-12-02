@@ -52,7 +52,16 @@ class Solution : SolutionBase
         return bag;
     }
 
-    private Bag GetBagByColor(string bagColor) => this.Bags.FirstOrDefault(b => b.BagColor == bagColor);
+    private Bag GetBagByColor(string bagColor)
+    {
+        var bag = this.Bags.FirstOrDefault(b => b.BagColor == bagColor);
+        if (bag is null)
+        {
+            throw new InvalidOperationException($"Unable to locate bag color '{bagColor}'.");
+        }
+
+        return bag;
+    }
 
     private void ParseContainingBags()
     {
@@ -74,7 +83,7 @@ class Solution : SolutionBase
     {
         var nestedBags = new HashSet<Bag>();
         // loop each bag that "contains" the bag passed in
-        if (ContainingBags.TryGetValue(bag, out HashSet<Bag> containedBags))
+        if (ContainingBags.TryGetValue(bag, out var containedBags) && containedBags is not null)
         {
             foreach (var containedBag in containedBags)
             {
@@ -107,13 +116,9 @@ public class Bag : IEquatable<Bag>
         this.BagColor = bagColor;
     }
 
-    public int GetHashCode(Bag obj)
-    {
-        return obj.BagColor.GetHashCode();
-    }
+    public override int GetHashCode() => StringComparer.Ordinal.GetHashCode(this.BagColor);
 
-    public bool Equals(Bag other)
-    {
-        return other != null && other.BagColor == this.BagColor;
-    }
+    public bool Equals(Bag? other) => other is not null && other.BagColor == this.BagColor;
+
+    public override bool Equals(object? obj) => Equals(obj as Bag);
 }

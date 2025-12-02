@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace AdventOfCode.Solutions.Year2021.Day02;
 
 class Solution : SolutionBase
@@ -11,8 +13,17 @@ class Solution : SolutionBase
         var depth = 0;
         foreach (var instruction in instructions)
         {
-            var (action, value, _) = instruction.Split(' ');
-            var num = int.Parse(value);
+            var parts = instruction.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length < 2)
+            {
+                continue;
+            }
+
+            var action = parts[0];
+            if (!int.TryParse(parts[1], NumberStyles.Integer, CultureInfo.InvariantCulture, out var num))
+            {
+                throw new FormatException($"Invalid instruction value: {parts[1]}");
+            }
             switch (action)
             {
                 case "forward":
@@ -39,8 +50,17 @@ class Solution : SolutionBase
         var aim = 0;
         foreach (var instruction in instructions)
         {
-            var (action, value, _) = instruction.Split(' ');
-            var num = int.Parse(value);
+            var parts = instruction.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            if (parts.Length < 2)
+            {
+                continue;
+            }
+
+            var action = parts[0];
+            if (!int.TryParse(parts[1], NumberStyles.Integer, CultureInfo.InvariantCulture, out var num))
+            {
+                throw new FormatException($"Invalid instruction value: {parts[1]}");
+            }
             switch (action)
             {
                 case "forward":
