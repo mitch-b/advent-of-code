@@ -6,11 +6,29 @@ class Solution : SolutionBase
 
     protected override string? SolvePartOne()
     {
-        return null;
+        var packetLen = 4;
+        for (var i = 0; i < (Input.Length - packetLen); i++)
+        {
+            if (Input.Skip(i).Take(packetLen).Distinct().Count() == packetLen)
+            {
+                return (i + packetLen).ToString();
+            }
+        }
+
+        return "";
     }
 
     protected override string? SolvePartTwo()
     {
-        return null;
+        var packetLen = 14;
+        for (var i = 0; i < (Input.Length - packetLen); i++)
+        {
+            if (Input.Skip(i).Take(packetLen).Distinct().Count() == packetLen)
+            {
+                return (i + packetLen).ToString();
+            }
+        }
+
+        return "";
     }
 }
