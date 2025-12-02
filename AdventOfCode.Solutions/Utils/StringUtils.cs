@@ -9,17 +9,23 @@ public static class StringUtils
         return new string(arr);
     }
 
-    public static string[] SplitByNewline(this string str, bool shouldTrim = false) => str
-        .Split(new[] { "\r", "\n", "\r\n" }, StringSplitOptions.None)
-        .Where(s => !string.IsNullOrWhiteSpace(s))
-        .Select(s => shouldTrim ? s.Trim() : s)
-        .ToArray();
+    public static T[][] SplitToMatrix<T>(this string str, bool shouldTrim = false) => [.. str
+        .SplitByNewline(shouldTrim)
+        .Select(row => row
+            .ToArray() // split
+            .Select(x => (T)Convert.ChangeType(x, typeof(T)))
+            .ToArray() // Enumerable to array
+        )];
 
-    public static string[] SplitByParagraph(this string str, bool shouldTrim = false) => str
-        .Split(new[] { "\r\r", "\n\n", "\r\n\r\n" }, StringSplitOptions.None)
+    public static string[] SplitByNewline(this string str, bool shouldTrim = false) => [.. str
+        .Split(["\r", "\n", "\r\n"], StringSplitOptions.None)
         .Where(s => !string.IsNullOrWhiteSpace(s))
-        .Select(s => shouldTrim ? s.Trim() : s)
-        .ToArray();
+        .Select(s => shouldTrim ? s.Trim() : s)];
+
+    public static string[] SplitByParagraph(this string str, bool shouldTrim = false) => [.. str
+        .Split(["\r\r", "\n\n", "\r\n\r\n"], StringSplitOptions.None)
+        .Where(s => !string.IsNullOrWhiteSpace(s))
+        .Select(s => shouldTrim ? s.Trim() : s)];
 
     public static int[] ToIntArray(this string str, string delimiter = "")
     {
@@ -37,11 +43,10 @@ public static class StringUtils
         }
         else
         {
-            return str
+            return [.. str
                 .Split(delimiter)
                 .Where(n => int.TryParse(n, out int v))
-                .Select(n => Convert.ToInt32(n))
-                .ToArray();
+                .Select(n => Convert.ToInt32(n))];
         }
     }
 
@@ -63,11 +68,10 @@ public static class StringUtils
         }
         else
         {
-            return str
+            return [.. str
                 .Split(delimiter)
                 .Where(n => long.TryParse(n, out long v))
-                .Select(n => Convert.ToInt64(n))
-                .ToArray();
+                .Select(n => Convert.ToInt64(n))];
         }
     }
 }
