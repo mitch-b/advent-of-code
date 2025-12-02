@@ -12,15 +12,15 @@ class Solution : SolutionBase
         {
             var direction = line[0];
             var rotations = int.Parse(line[1..]);
-            position += direction == 'L' 
-                ? -rotations 
+            position += direction == 'L'
+                ? -rotations
                 : rotations;
             position = NormalizePosition(position);
             if (position == 0)
             {
                 timesAtZero++;
             }
-            
+
         }
         return timesAtZero.ToString();
     }
@@ -36,8 +36,8 @@ class Solution : SolutionBase
             var rotations = int.Parse(line[1..]);
 
             var previousPosition = position;
-            position += direction == 'L' 
-                ? -rotations 
+            position += direction == 'L'
+                ? -rotations
                 : rotations;
 
             var newPosition = NormalizePosition(position);
@@ -45,11 +45,11 @@ class Solution : SolutionBase
 
             timesAtZero += zeroesHit;
 
-            Console.WriteLine($"From: {previousPosition} to {newPosition}, rotated {direction} {rotations} times. Touched zero {zeroesHit} times.");
+            // Console.WriteLine($"From: {previousPosition} to {newPosition}, rotated {direction} {rotations} times. Touched zero {zeroesHit} times.");
 
             position = newPosition;
         }
-        
+
         return timesAtZero.ToString();
     }
 
@@ -60,8 +60,8 @@ class Solution : SolutionBase
             return position % 100;
         }
         var mod = Math.Abs(position) % 100;
-        return mod == 0 
-            ? 0 
+        return mod == 0
+            ? 0
             : 100 - mod;
     }
 
@@ -71,7 +71,7 @@ class Solution : SolutionBase
         {
             return rotations / 100;
         }
-        
+
         var fullRotations = rotations / 100;
         var remainder = rotations % 100;
         var zeroesHit = fullRotations;
