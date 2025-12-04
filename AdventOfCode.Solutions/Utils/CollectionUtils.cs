@@ -10,18 +10,36 @@ public static class CollectionUtils
     public static T GetXY<T>(this IEnumerable<IEnumerable<T>> matrix, Coordinate coordinate) =>
         matrix.GetXY(coordinate.X, coordinate.Y);
 
-    public static void SetXY<T>(this IEnumerable<IEnumerable<T>> matrix, int x, int y, T value)
+    public static void SetXY<T>(this T[][] matrix, int x, int y, T value)
     {
-        var row = matrix.ElementAt(y).ToList();
-        row[x] = value;
-        row.CopyTo([.. matrix.ElementAt(y)]);
+        matrix[y][x] = value;
     }
 
-    public static void SetXY<T>(this IEnumerable<IEnumerable<T>> matrix, Coordinate coordinate, T value)
+    public static Coordinate[] GetSurroundingCoordinates<T>(this IEnumerable<IEnumerable<T>> matrix, int x, int y)
     {
-        var row = matrix.ElementAt(coordinate.Y).ToList();
-        row[coordinate.X] = value;
-        row.CopyTo([.. matrix.ElementAt(coordinate.Y)]);
+        var directions = new (int x, int y)[]
+        {
+            (-1, -1), (0, -1), (1, -1),
+            (-1, 0),  /* :) */ (1, 0),
+            (-1, 1),  (0, 1),  (1, 1)
+        };
+
+        var surroundingCoordinates = new List<Coordinate>();
+
+        foreach (var (dx, dy) in directions)
+        {
+            var newX = x + dx;
+            var newY = y + dy;
+
+            if (newX >= 0 && newY >= 0 &&
+                newY < matrix.Count() &&
+                newX < matrix.ElementAt(newY).Count())
+            {
+                surroundingCoordinates.Add(new Coordinate(newX, newY));
+            }
+        }
+
+        return [.. surroundingCoordinates];
     }
 
     public static IEnumerable<T> IntersectAll<T>(this IEnumerable<IEnumerable<T>> input)
