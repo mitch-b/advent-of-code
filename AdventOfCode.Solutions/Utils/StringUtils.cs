@@ -27,6 +27,10 @@ public static class StringUtils
         .Where(s => !string.IsNullOrWhiteSpace(s))
         .Select(s => shouldTrim ? s.Trim() : s)];
 
+    public static string[] SplitByWhitespace(this string str, bool shouldTrim = false) => [.. str
+        .Split([' ', '\t'], StringSplitOptions.RemoveEmptyEntries)
+        .Select(s => shouldTrim ? s.Trim() : s)];
+
     public static int[] ToIntArray(this string str, string delimiter = "")
     {
         if (delimiter == "")
