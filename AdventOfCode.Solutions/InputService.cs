@@ -54,6 +54,21 @@ public static class InputService
         return container;
     }
 
-    private static bool IsPuzzleAvailable(int year, int day) =>
-        TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, "EST") >= new DateTime(year, 12, day);
+    private static bool IsPuzzleAvailable(int year, int day)
+    {
+        var timeZoneIds = new[] { "EST", "Eastern Standard Time", "America/New_York" };
+        foreach (var timeZoneId in timeZoneIds)
+        {
+            try
+            {
+                return TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.Now, timeZoneId) >= new DateTime(year, 12, day);
+            }
+            catch (TimeZoneNotFoundException)
+            {
+                // try the next one
+            }
+        }
+        throw new TimeZoneNotFoundException("Could not find a valid time zone for EST.");
+    }
+
 }
